@@ -101,6 +101,6 @@ public class VarastoTest {
     public void testaaEttaKunOtetaanLiikaaPalautetaanSaldo(){
         varasto.lisaaVarastoon(5);
         varasto.otaVarastosta(15);
-        assertEquals(0.1, varasto.getSaldo(), 0);
+        assertEquals(0.0, varasto.getSaldo(), 0);
     }
 }
