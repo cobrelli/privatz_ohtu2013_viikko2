@@ -97,6 +97,8 @@ public class VarastoTest {
         assertEquals(alussa, varasto.getSaldo(), 0);
     }
     
+    //triggeröidään webhook
+    
     @Test
     public void testaaEttaKunOtetaanLiikaaPalautetaanSaldo(){
         varasto.lisaaVarastoon(5);
