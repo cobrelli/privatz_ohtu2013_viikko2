@@ -10,9 +10,8 @@ public class Statistics {
     private List<Player> players;
 
     public Statistics(Reader lukija) {
-//        PlayerReader reader = new PlayerReader("http://nhlstatistics.herokuapp.com/players.txt");
         Reader reader = lukija;
-        players = reader.getPlayers();       
+        players = reader.getPlayers();
     }
 
     public Player search(String name) {
@@ -21,15 +20,15 @@ public class Statistics {
                 return player;
             }
         }
-
+        
         return null;
     }
 
     public List<Player> team(String teamName) {
         ArrayList<Player> playersOfTeam = new ArrayList<Player>();
-        
+
         for (Player player : players) {
-            if ( player.getTeam().equals(teamName)) {
+            if (player.getTeam().equals(teamName)) {
                 playersOfTeam.add(player);
             }
         }
@@ -39,15 +38,14 @@ public class Statistics {
 
     public List<Player> topScorers(int howMany) {
         Collections.sort(players);
-        ArrayList<Player> topScorers = new ArrayList<Player>();
+        ArrayList<Player> top = new ArrayList<Player>();
         Iterator<Player> playerIterator = players.iterator();
-        
-        while (howMany>=0) {
-            topScorers.add( playerIterator.next() );            
+
+        while (howMany > 0) {
+            top.add(playerIterator.next());
             howMany--;
         }
-        
-        return topScorers;
-    }
 
+        return top;
+    }
 }
