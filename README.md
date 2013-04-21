@@ -1,2 +1,7 @@
 privatz_ohtu2013_viikko2
-========================
+
+ja remotena
+ohtu-viikko1
+
+nananana
+090597bbf415b29b69c5d9bb8b9a28be99c5ea7f
