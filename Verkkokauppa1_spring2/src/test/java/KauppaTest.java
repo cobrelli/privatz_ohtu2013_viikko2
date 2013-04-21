@@ -137,4 +137,15 @@ public class KauppaTest {
         kauppa.tilimaksu("pekka", "12345");
         verify(viite).uusi();
     }
+    
+    @Test
+    public void kunTuotePoistetaanKoristaSePoistuuOikein() {
+        kauppa.aloitaAsiointi();
+        kauppa.lisaaKoriin(1);
+        kauppa.lisaaKoriin(2);
+        kauppa.poistaKorista(2);
+        kauppa.tilimaksu("pekka", "12345");
+
+        verify(pankki).tilisiirto(eq("pekka"), anyInt(), eq("12345"), anyString(), eq(5));
+    }
 }
