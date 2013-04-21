@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-public class StaticsticsTest {
+public class StatisticsTest {
 
     Statistics stats;
     PlayerReader palayerReader = new PlayerReader() {
