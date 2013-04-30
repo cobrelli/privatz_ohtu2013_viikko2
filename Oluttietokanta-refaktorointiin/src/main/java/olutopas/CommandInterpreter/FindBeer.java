@@ -43,23 +43,6 @@ public class FindBeer extends Command {
         } catch (Exception e) {
         }
     }
-//        
-//        System.out.print("brewery to find: ");
-//        String n = io.readString();
-////        System.out.println(n);
-////        System.out.println(server.toString());
-//        Brewery foundBrewery = server.find(Brewery.class).where().like("name", n).findUnique();
-////        Brewery foundBrewery = null;
-//        if (foundBrewery == null) {
-//            System.out.println(n + " not found");
-//            return;
-//        }
-//
-//        System.out.println(foundBrewery);
-//        for (Beer bier : foundBrewery.getBeers()) {
-//            System.out.println("   " + bier.getName());
-//        }
-//    }
 
     private void addRating(Beer foundBeer, int value) {
         Rating rating = new Rating(foundBeer, user, value);

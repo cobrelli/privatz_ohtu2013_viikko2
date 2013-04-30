@@ -16,27 +16,27 @@ public class AddBeer extends Command {
 
     @Override
     public void run() {
-        System.out.print("to which brewery: ");
+        io.printLine("to which brewery: ");
         String name = io.readString();
         Brewery brewery = server.find(Brewery.class).where().like("name", name).findUnique();
 
         if (brewery == null) {
-            System.out.println(name + " does not exist");
+            io.printLine(name + " does not exist");
             return;
         }
 
-        System.out.print("beer to add: ");
+        io.printLine("beer to add: ");
 
         name = io.readString();
 
         Beer exists = server.find(Beer.class).where().like("name", name).findUnique();
         if (exists != null) {
-            System.out.println(name + " exists already");
+            io.printLine(name + " exists already");
             return;
         }
 
         brewery.addBeer(new Beer(name));
         server.save(brewery);
-        System.out.println(name + " added to " + brewery.getName());
+        io.printLine(name + " added to " + brewery.getName());
     }
 }

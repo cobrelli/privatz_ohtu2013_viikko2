@@ -15,10 +15,6 @@ public class Application {
     userIO io = new userIO();
     CommandInterpreter komennot;
 
-//    public Application(EbeanServer server) {
-//        this.server = server;
-//        komennot = new CommandInterpreter(io, server, this.user);
-//    }
     public Application(Datamapper mapper) {
         this.server = ((EbeanSqliteDatamapper) mapper).getServer();
         this.komennot = new CommandInterpreter(io, server, user);
