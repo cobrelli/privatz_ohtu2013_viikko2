@@ -1,7 +1,7 @@
 package olutopas.CommandInterpreter;
 
 import com.avaje.ebean.EbeanServer;
-import olutopas.IO;
+import olutopas.ApplicationLogic.IO;
 import olutopas.model.Beer;
 import olutopas.model.Brewery;
 
@@ -16,20 +16,17 @@ public class FindBrewery extends Command {
 
     @Override
     public void run() {
-        System.out.print("brewery to find: ");
+        io.printLine("brewery to find: ");
         String n = io.readString();
-//        System.out.println(n);
-//        System.out.println(server.toString());
         Brewery foundBrewery = server.find(Brewery.class).where().like("name", n).findUnique();
-//        Brewery foundBrewery = null;
         if (foundBrewery == null) {
-            System.out.println(n + " not found");
+            io.printLine(n + " not found");
             return;
         }
 
-        System.out.println(foundBrewery);
+        io.printLine(foundBrewery.toString());
         for (Beer bier : foundBrewery.getBeers()) {
-            System.out.println("   " + bier.getName());
+            io.printLine("   " + bier.getName());
         }
     }
 }

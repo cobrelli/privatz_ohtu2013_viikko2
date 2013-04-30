@@ -1,4 +1,4 @@
-package olutopas;
+package olutopas.ApplicationLogic;
 
 public interface IO {
 

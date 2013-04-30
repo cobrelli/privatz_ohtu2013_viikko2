@@ -3,7 +3,7 @@ package olutopas.CommandInterpreter;
 import com.avaje.ebean.EbeanServer;
 import java.util.HashMap;
 import java.util.Map;
-import olutopas.IO;
+import olutopas.ApplicationLogic.IO;
 import olutopas.model.User;
 
 public class CommandInterpreter {

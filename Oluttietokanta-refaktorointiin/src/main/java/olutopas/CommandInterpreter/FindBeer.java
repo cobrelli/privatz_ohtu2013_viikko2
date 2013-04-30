@@ -1,7 +1,7 @@
 package olutopas.CommandInterpreter;
 
 import com.avaje.ebean.EbeanServer;
-import olutopas.IO;
+import olutopas.ApplicationLogic.IO;
 import olutopas.model.Beer;
 import olutopas.model.Rating;
 import olutopas.model.User;

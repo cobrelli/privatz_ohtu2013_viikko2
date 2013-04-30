@@ -1,6 +1,6 @@
 package olutopas.CommandInterpreter;
 
-import olutopas.IO;
+import olutopas.ApplicationLogic.IO;
 
 public abstract class Command {
 

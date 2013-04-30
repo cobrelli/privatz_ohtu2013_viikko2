@@ -1,6 +1,6 @@
-package olutopas;
+package olutopas.ApplicationLogic;
 
-import olutopas.Datamapper;
+import olutopas.ApplicationLogic.Datamapper;
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.Transaction;
@@ -32,6 +32,30 @@ public class EbeanSqliteDatamapper implements Datamapper {
         config.setName("beerDb");
         DataSourceConfig sqLite = new DataSourceConfig();
 
+        sqLite.setDriver("org.sqlite.JDBC");
+        sqLite.setUsername("mluukkai");
+        sqLite.setPassword("mluukkai");
+        sqLite.setUrl("jdbc:sqlite:beer.db");
+        config.setDataSourceConfig(sqLite);
+        sqLite.setUrl("jdbc:sqlite:beer.db");
+        config.setDataSourceConfig(sqLite);
+        config.setDatabasePlatform(new SQLitePlatform());
+        config.getDataSourceConfig().setIsolationLevel(Transaction.READ_UNCOMMITTED);
+
+        config.setDefaultServer(false);
+        config.setRegister(false);
+
+        config.addClass(Beer.class);
+        config.addClass(Brewery.class);
+        config.addClass(User.class);
+        config.addClass(Rating.class);
+
+        if (dropAndCreate) {
+            config.setDdlGenerate(true);
+            config.setDdlRun(true);
+            //config.setDebugSql(true);
+        }
+
 //        if (db == Main.Database.H2) {
 //            DataSourceConfig hdDB = new DataSourceConfig();
 //            hdDB.setDriver("org.h2.Driver");
@@ -53,13 +77,13 @@ public class EbeanSqliteDatamapper implements Datamapper {
 //            config.getDataSourceConfig().setIsolationLevel(Transaction.READ_UNCOMMITTED);
 //        }
 
-        config.setDefaultServer(false);
-        config.setRegister(false);
-
-        config.addClass(Beer.class);
-        config.addClass(Brewery.class);
-        config.addClass(User.class);
-        config.addClass(Rating.class);
+//        config.setDefaultServer(false);
+//        config.setRegister(false);
+//
+//        config.addClass(Beer.class);
+//        config.addClass(Brewery.class);
+//        config.addClass(User.class);
+//        config.addClass(Rating.class);
 
 //        if (dropAndCreateDatabase) {
 //            config.setDdlGenerate(true);
@@ -67,7 +91,11 @@ public class EbeanSqliteDatamapper implements Datamapper {
 //            //config.setDebugSql(true);
 //        }
 
-        EbeanServerFactory.create(config);
+        for (Class luokka : luokat) {
+            config.addClass(luokka);
+        }
+
+        server = EbeanServerFactory.create(config);
     }
 
     public Brewery brewerywithName(String n) {

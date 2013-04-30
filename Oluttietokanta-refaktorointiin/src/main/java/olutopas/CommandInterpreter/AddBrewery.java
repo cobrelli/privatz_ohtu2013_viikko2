@@ -1,7 +1,7 @@
 package olutopas.CommandInterpreter;
 
 import com.avaje.ebean.EbeanServer;
-import olutopas.IO;
+import olutopas.ApplicationLogic.IO;
 import olutopas.model.Brewery;
 
 public class AddBrewery extends Command {
@@ -15,12 +15,12 @@ public class AddBrewery extends Command {
 
     @Override
     public void run() {
-        System.out.print("brewery to add: ");
+        io.printLine("brewery to add: ");
         String name = io.readString();
         Brewery brewery = server.find(Brewery.class).where().like("name", name).findUnique();
 
         if (brewery != null) {
-            System.out.println(name + " already exists!");
+            io.printLine(name + " already exists!");
             return;
         }
 
