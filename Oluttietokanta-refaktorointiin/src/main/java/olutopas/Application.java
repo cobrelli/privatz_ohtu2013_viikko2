@@ -11,44 +11,46 @@ import olutopas.model.Rating;
 import olutopas.model.User;
 
 public class Application {
-
+    
     private EbeanServer server;
 //    private Scanner scanner = new Scanner(System.in);
     private User user;
     userIO io = new userIO();
-    CommandInterpreter komennot = new CommandInterpreter(io, server);
-
+    CommandInterpreter komennot;
+    
     public Application(EbeanServer server) {
         this.server = server;
+        komennot = new CommandInterpreter(io, server, this.user);
     }
-
+    
     public void run(boolean newDatabase) {
         if (newDatabase) {
             seedDatabase();
         }
-
+        
         login();
-
+        
         System.out.println("\nWelcome to Ratebeer " + user.getName());
-
+        
         while (true) {
             menu();
             System.out.print("> ");
             String command = io.readString();
-
+            
             Command komento = komennot.getCommand(command);
             if (komento != null) {
                 komento.run();
             }
-
+            
             if (command.equals("q")) {
                 break;
             } //            else if (command.equals("1")) {
             //                findBrewery();
             //            } 
-            else if (command.equals("2")) {
-                findBeer();
-            } else if (command.equals("3")) {
+            //            else if (command.equals("2")) {
+            //                findBeer();
+            //            } 
+            else if (command.equals("3")) {
                 addBeer();
             } else if (command.equals("4")) {
                 listBreweries();
@@ -63,14 +65,14 @@ public class Application {
             } else {
                 System.out.println("unknown command");
             }
-
+            
             System.out.print("\npress enter to continue");
             io.readString();
         }
-
+        
         System.out.println("bye");
     }
-
+    
     private void menu() {
         System.out.println("");
         System.out.println("1   find brewery");
@@ -89,7 +91,7 @@ public class Application {
         System.out.println("q   quit");
         System.out.println("");
     }
-
+    
     private void seedDatabase() throws OptimisticLockException {
         Brewery brewery = new Brewery("Schlenkerla");
         brewery.addBeer(new Beer("Urbock"));
@@ -107,30 +109,30 @@ public class Application {
         brewery = server.find(Brewery.class, brewery.getId());
         brewery.addBeer(b);
         server.save(brewery);
-
+        
         server.save(new Brewery("Paulaner"));
-
+        
         server.save(new User("mluukkai"));
     }
-
+    
     private void findBeer() {
         System.out.print("beer to find: ");
         String n = io.readString();
         Beer foundBeer = server.find(Beer.class).where().like("name", n).findUnique();
-
+        
         if (foundBeer == null) {
             System.out.println(n + " not found");
             return;
         }
-
+        
         System.out.println(foundBeer);
-
+        
         if (foundBeer.getRatings() != null && foundBeer.getRatings().size() != 0) {
             System.out.println("  number of ratings: " + foundBeer.getRatings().size() + " average " + foundBeer.averageRating());
         } else {
             System.out.println("no ratings");
         }
-
+        
         System.out.print("give rating (leave emtpy if not): ");
         try {
             int rating = Integer.parseInt(io.readString());
@@ -138,39 +140,55 @@ public class Application {
         } catch (Exception e) {
         }
     }
-
+    
+    private void findBrewery() {
+        System.out.print("brewery to find: ");
+        String n = io.readString();
+        Brewery foundBrewery = server.find(Brewery.class).where().like("name", n).findUnique();
+        
+        if (foundBrewery == null) {
+            System.out.println(n + " not found");
+            return;
+        }
+        
+        System.out.println(foundBrewery);
+        for (Beer bier : foundBrewery.getBeers()) {
+            System.out.println("   " + bier.getName());
+        }
+    }
+    
     private void listBreweries() {
         List<Brewery> breweries = server.find(Brewery.class).findList();
         for (Brewery brewery : breweries) {
             System.out.println(brewery);
         }
     }
-
+    
     private void addBeer() {
         System.out.print("to which brewery: ");
         String name = io.readString();
         Brewery brewery = server.find(Brewery.class).where().like("name", name).findUnique();
-
+        
         if (brewery == null) {
             System.out.println(name + " does not exist");
             return;
         }
-
+        
         System.out.print("beer to add: ");
-
+        
         name = io.readString();
-
+        
         Beer exists = server.find(Beer.class).where().like("name", name).findUnique();
         if (exists != null) {
             System.out.println(name + " exists already");
             return;
         }
-
+        
         brewery.addBeer(new Beer(name));
         server.save(brewery);
         System.out.println(name + " added to " + brewery.getName());
     }
-
+    
     private void listBeers() {
         List<Beer> beers = server.find(Beer.class).orderBy("brewery.name").findList();
         for (Beer beer : beers) {
@@ -182,41 +200,41 @@ public class Application {
             }
         }
     }
-
+    
     private void addBrewery() {
         System.out.print("brewery to add: ");
         String name = io.readString();
         Brewery brewery = server.find(Brewery.class).where().like("name", name).findUnique();
-
+        
         if (brewery != null) {
             System.out.println(name + " already exists!");
             return;
         }
-
+        
         server.save(new Brewery(name));
     }
-
+    
     private void login() {
         while (true) {
             System.out.println("\nLogin (give ? to register a new user)\n");
-
+            
             System.out.print("username: ");
             String name = io.readString();
-
+            
             if (name.equals("?")) {
                 registerUser();
                 continue;
             }
-
+            
             user = server.find(User.class).where().like("name", name).findUnique();
-
+            
             if (user != null) {
                 break;
             }
             System.out.println("unknown user");
         }
     }
-
+    
     private void registerUser() {
         System.out.println("Register a new user");
         System.out.print("give username: ");
@@ -229,23 +247,27 @@ public class Application {
         server.save(new User(name));
         System.out.println("user created!\n");
     }
-
+    
     private void addRating(Beer foundBeer, int value) {
         Rating rating = new Rating(foundBeer, user, value);
         server.save(rating);
     }
-
+    
     private void myRatings() {
         System.out.println("Ratings by " + user.getName());
         for (Rating rating : user.getRatings()) {
             System.out.println(rating);
         }
     }
-
+    
     private void listUsers() {
         List<User> users = server.find(User.class).findList();
         for (User user : users) {
             System.out.println(user.getName() + " " + user.getRatings().size() + " ratings");
         }
+    }
+    
+    public User getUser() {
+        return this.user;
     }
 }

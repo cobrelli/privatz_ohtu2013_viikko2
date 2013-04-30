@@ -18,8 +18,10 @@ public class FindBrewery extends Command {
     public void run() {
         System.out.print("brewery to find: ");
         String n = io.readString();
+//        System.out.println(n);
+//        System.out.println(server.toString());
         Brewery foundBrewery = server.find(Brewery.class).where().like("name", n).findUnique();
-
+//        Brewery foundBrewery = null;
         if (foundBrewery == null) {
             System.out.println(n + " not found");
             return;

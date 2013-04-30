@@ -36,10 +36,10 @@ public class userIO implements IO {
 
     public String readString() {
         String luettava = scanner.nextLine();
-        if (luettava.isEmpty()) {
-            System.out.println("Syöte ei saa olla tyhjä: ");
-            return readString();
-        }
+//        if (luettava.isEmpty()) {
+//            System.out.println("Syöte ei saa olla tyhjä: ");
+//            return readString();
+//        }
         return luettava;
     }
 }
