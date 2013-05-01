@@ -42,5 +42,12 @@ public class Main {
         for (Player player : stats.matches(m3)) {
             System.out.println(player);
         }
+        
+        System.out.println();
+        System.out.println("----");
+        System.out.println();
+        
+        
+        
     }
 }
